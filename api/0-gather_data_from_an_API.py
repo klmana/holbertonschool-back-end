@@ -14,8 +14,8 @@ def counter(completed=None):
     """
 
     count = 0
-    for any in todo:
-        if any.get('completed') is True:
+    for arg in todo:
+        if arg.get('completed') is True:
             count += 1
     return count
 
@@ -35,6 +35,6 @@ if __name__ == "__main__":
      counter(todo),
      len(todo)))
 
-    for any in todo:
-        if any.get('completed') is True:
-            print("\t {}".format(any.get('title')))
+    for arg in todo:
+        if arg.get('completed') is True:
+            print("\t {}".format(arg.get('title')))
