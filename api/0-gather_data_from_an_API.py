@@ -1,38 +1,36 @@
 #!/usr/bin/python3
 """
-  Script that, using this REST API, for a given employee ID,
-  returns information about his/her TODO list progress.
+  Request from API; Return TODO list progress given employee ID
 """
-
 import requests
 from sys import argv
 
 
-def counter(completed=None):
-    """counter of completed tasks"""
-
-    count = 0
-    for arg in todo:
-        if arg.get('completed') is True:
-            count += 1
-    return count
+def counter():
+    """
+      Return API data
+    """
+    users = requests.get("http://jsonplaceholder.typicode.com/users")
+    for u in users.json():
+        if u.get('id') == int(argv[1]):
+            EMPLOYEE_NAME = (u.get('name'))
+            break
+    TOTAL_NUM_OF_TASKS = 0
+    NUMBER_OF_DONE_TASKS = 0
+    TASK_TITLE = []
+    todos = requests.get("http://jsonplaceholder.typicode.com/todos")
+    for t in todos.json():
+        if t.get('userId') == int(argv[1]):
+            TOTAL_NUM_OF_TASKS += 1
+            if t.get('completed') is True:
+                NUMBER_OF_DONE_TASKS += 1
+                TASK_TITLE.append(t.get('title'))
+    print("Employee {} is done with tasks({}/{}):".format(EMPLOYEE_NAME,
+                                                          NUMBER_OF_DONE_TASKS,
+                                                          TOTAL_NUM_OF_TASKS))
+    for task in TASK_TITLE:
+        print("\t {}".format(task))
 
 
 if __name__ == "__main__":
-
-    payload = {'id': argv[1]}
-    user = requests.get('https://jsonplaceholder.typicode.com/users'.format(
-                        payload), params=payload).json()
-
-    payload2 = {'userId': argv[1]}
-    todo = requests.get('https://jsonplaceholder.typicode.com/todos'.format(
-                        payload), params=payload2).json()
-
-    print('Employee {} is done with tasks({}/{}):'.format(
-        user[0].get('name'),
-        counter(todo),
-        len(todo)))
-
-    for arg in todo:
-        if arg.get('completed') is True:
-            print('\t {}'.format(arg.get('title')))
+    counter()
