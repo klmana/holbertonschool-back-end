@@ -4,9 +4,9 @@
   Return TODO list progress given employee ID
   and Export this data to CSV
 """
+import csv
 import requests
 from sys import argv
-import csv
 
 
 def to_the_csv():
